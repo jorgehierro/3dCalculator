@@ -9,8 +9,8 @@ class Configuracion:
     consumo_maquina: float = 0.4            # kW
     precio_cambio_filamento: float = 0.12   # €/cambio
     precio_mantenimiento: float = 0.15      # €/hora
-    precio_hora_diseno: float = 15          # €/hora diseño/gestiones
-    precio_hora_post: float = 8             # €/hora postprocesado
+    precio_hora_diseno: float = 15.0          # €/hora diseño/gestiones
+    precio_hora_post: float = 8.0             # €/hora postprocesado
 
 # Diccionario de filamentos (€/kg)
 filamentos = {

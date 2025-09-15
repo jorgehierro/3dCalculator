@@ -22,7 +22,7 @@ cfg.precio_hora_post = st.number_input("🔧 Precio por hora de postprocesado (�
 st.subheader("📦 Datos del trabajo de impresión")
 
 tipo_filamento = st.selectbox("Tipo de filamento", ["PLA", "ABS", "PETG", "Otro"])
-tiempo_impresion = st.text_input("⏱️ Tiempo de impresión (hh:mm)", "01:00")  # si tu función lo espera como string
+tiempo_impresion = st.text_input("⏱️ Tiempo de impresión (ej: 3h12m)", "1h0m")
 cantidad_filamento = st.number_input("📏 Cantidad de filamento (g)", min_value=0.0, step=0.1)
 cambios_filamento = st.number_input("🔄 Cambios de filamento", min_value=0, step=1)
 tiempo_diseño = st.number_input("✏️ Tiempo de diseño (h)", min_value=0.0, step=0.1)
