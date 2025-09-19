@@ -52,8 +52,6 @@ if st.button("Calcular precio"):
         st.metric("👷 Mano de obra", f"{coste_mano_obra:.2f} €")
     
     st.subheader("📊 Beneficios")
-    col3 = st.columns(1)
-    with col3:
-        st.metric("📈 Beneficio", f"{beneficio:.2f} €")
-        st.metric("⏳ Beneficio por hora", f"{beneficio_por_hora:.2f} €/h")
-        st.metric("🧩 Beneficio por unidad", f"{beneficio_por_unidad:.2f} €/unidad")
+    st.metric("📈 Beneficio", f"{beneficio:.2f} €")
+    st.metric("⏳ Beneficio por hora", f"{beneficio_por_hora:.2f} €/h")
+    st.metric("🧩 Beneficio por unidad", f"{beneficio_por_unidad:.2f} €/unidad")
