@@ -76,4 +76,7 @@ def precio_total(tipo_filamento: str, tiempo_impresion: str, cantidad_filamento:
     coste_total = coste_impresion + coste_mano_obra
     coste_unitario = (coste_impresion + coste_mano_obra) / unidades
 
-    return coste_total, coste_unitario, coste_impresion, coste_mano_obra
+    beneficio = coste_mano_obra - coste_impresion
+    beneficio_por_hora = beneficio / (parse_tiempo(tiempo_impresion) + tiempo_diseño + tiempo_postprocesado)
+
+    return coste_total, coste_unitario, coste_impresion, coste_mano_obra, beneficio, beneficio_por_hora
