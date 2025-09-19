@@ -22,39 +22,85 @@ cfg.precio_hora_post = st.number_input("🔧 Precio por hora de postprocesado (�
 st.subheader("📦 Datos del trabajo de impresión")
 
 tipo_filamento = st.selectbox("Tipo de filamento", ["PLA", "PETG", "PLA-plus"])
-tiempo_impresion = st.text_input("⏱️ Tiempo de impresión (ej: 3h12m)", "1h0m")
-cantidad_filamento = st.number_input("📏 Cantidad de filamento (g)", min_value=0.0, step=0.1)
-cambios_filamento = st.number_input("🔄 Cambios de filamento", min_value=0, step=1)
-tiempo_diseño = st.number_input("✏️ Tiempo de diseño (h)", min_value=0.0, step=0.1)
-tiempo_postprocesado = st.number_input("🔧 Tiempo de postprocesado (h)", min_value=0.0, step=0.1)
-unidades = st.number_input("📦 Número de unidades", min_value=1, step=1)
+num_tandas = st.number_input("🔄 Número de tandas de impresión", min_value=1, step=1, value=1)
+
+# Guardar datos de cada tanda
+tandas = []
+for i in range(num_tandas):
+    st.markdown(f"### 🖨️ Tanda {i+1}")
+    tiempo_impresion = st.text_input(f"⏱️ Tiempo de impresión (ej: 3h12m) - Tanda {i+1}", "1h0m", key=f"t{i}")
+    cantidad_filamento = st.number_input(f"📏 Cantidad de filamento (g) - Tanda {i+1}", min_value=0.0, step=0.1, key=f"f{i}")
+    cambios_filamento = st.number_input(f"🔄 Cambios de filamento - Tanda {i+1}", min_value=0, step=1, key=f"c{i}")
+    tiempo_diseño = st.number_input(f"✏️ Tiempo de diseño (h) - Tanda {i+1}", min_value=0.0, step=0.1, key=f"d{i}")
+    tiempo_postprocesado = st.number_input(f"🔧 Tiempo de postprocesado (h) - Tanda {i+1}", min_value=0.0, step=0.1, key=f"p{i}")
+    unidades = st.number_input(f"📦 Número de unidades - Tanda {i+1}", min_value=1, step=1, key=f"u{i}")
+    
+    tandas.append({
+        "tiempo_impresion": tiempo_impresion,
+        "cantidad_filamento": cantidad_filamento,
+        "cambios_filamento": cambios_filamento,
+        "tiempo_diseño": tiempo_diseño,
+        "tiempo_postprocesado": tiempo_postprocesado,
+        "unidades": unidades
+    })
 
 # --- Botón para calcular ---
 if st.button("Calcular precio"):
-    coste_total, coste_unitario, coste_impresion, coste_mano_obra, beneficio, beneficio_por_hora, beneficio_por_unidad = precio_total(
-        tipo_filamento,
-        tiempo_impresion,
-        cantidad_filamento,
-        cambios_filamento,
-        tiempo_diseño,
-        tiempo_postprocesado,
-        unidades,
-        cfg
-    )
+    total_coste = total_unitario = total_impresion = 0
+    total_mano_obra = total_beneficio = 0
+    total_unidades = 0
+    total_beneficio_hora = []
+    total_beneficio_unidad = []
 
-    st.subheader("📊 Resultados")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.metric("💰 Coste total", f"{coste_total:.2f} €")
-        st.metric("🖨️ Coste de impresión", f"{coste_impresion:.2f} €")
-    with col2:
-        st.metric("📦 Coste unitario", f"{coste_unitario:.2f} €")
-        st.metric("👷 Mano de obra", f"{coste_mano_obra:.2f} €")
-    
-    st.subheader("📊 Beneficios")
+    st.subheader("📊 Resultados por tanda")
+
+    for i, t in enumerate(tandas):
+        coste_total, coste_unitario, coste_impresion, coste_mano_obra, beneficio, beneficio_por_hora, beneficio_por_unidad = precio_total(
+            tipo_filamento,
+            t["tiempo_impresion"],
+            t["cantidad_filamento"],
+            t["cambios_filamento"],
+            t["tiempo_diseño"],
+            t["tiempo_postprocesado"],
+            t["unidades"],
+            cfg
+        )
+
+        # Mostrar resultados por tanda
+        st.markdown(f"#### 🖨️ Tanda {i+1}")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("💰 Coste total", f"{coste_total:.2f} €")
+            st.metric("🖨️ Coste de impresión", f"{coste_impresion:.2f} €")
+        with col2:
+            st.metric("📦 Coste unitario", f"{coste_unitario:.2f} €")
+            st.metric("👷 Mano de obra", f"{coste_mano_obra:.2f} €")
+
+        st.write("---")
+
+        # Acumular totales
+        total_coste += coste_total
+        total_impresion += coste_impresion
+        total_mano_obra += coste_mano_obra
+        total_beneficio += beneficio
+        total_unidades += t["unidades"]
+        total_beneficio_hora.append(beneficio_por_hora)
+        total_beneficio_unidad.append(beneficio_por_unidad)
+
+    # --- Resultados globales ---
+    st.subheader("📊 Resultados totales")
     col3, col4 = st.columns(2)
     with col3:
-        st.metric("📈 Beneficio", f"{beneficio:.2f} €")
-        st.metric("⏳ Beneficio por hora", f"{beneficio_por_hora:.2f} €/h")
+        st.metric("💰 Coste total", f"{total_coste:.2f} €")
+        st.metric("🖨️ Coste de impresión", f"{total_impresion:.2f} €")
     with col4:
-        st.metric("🧩 Beneficio por unidad", f"{beneficio_por_unidad:.2f} €/unidad")
+        st.metric("📦 Unidades totales", f"{total_unidades}")
+        st.metric("👷 Mano de obra total", f"{total_mano_obra:.2f} €")
+
+    st.subheader("📊 Beneficios globales")
+    col5, col6 = st.columns(2)
+    with col5:
+        st.metric("📈 Beneficio total", f"{total_beneficio:.2f} €")
+        st.metric("⏳ Beneficio medio por hora", f"{sum(total_beneficio_hora)/len(total_beneficio_hora):.2f} €/h")
+    with col6:
+        st.metric("🧩 Beneficio medio por unidad", f"{sum(total_beneficio_unidad)/len(total_beneficio_unidad):.2f} €/unidad")
