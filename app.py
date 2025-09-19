@@ -43,13 +43,16 @@ if st.button("Calcular precio"):
     )
 
     st.subheader("📊 Resultados")
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
         st.metric("💰 Coste total", f"{coste_total:.2f} €")
         st.metric("🖨️ Coste de impresión", f"{coste_impresion:.2f} €")
     with col2:
         st.metric("📦 Coste unitario", f"{coste_unitario:.2f} €")
         st.metric("👷 Mano de obra", f"{coste_mano_obra:.2f} €")
+    
+    st.subheader("📊 Beneficios")
+    col3 = st.columns(1)
     with col3:
         st.metric("📈 Beneficio", f"{beneficio:.2f} €")
         st.metric("⏳ Beneficio por hora", f"{beneficio_por_hora:.2f} €/h")
