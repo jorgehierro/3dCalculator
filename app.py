@@ -104,3 +104,4 @@ if st.button("Calcular precio"):
         st.metric("⏳ Beneficio medio por hora", f"{sum(total_beneficio_hora)/len(total_beneficio_hora):.2f} €/h")
     with col6:
         st.metric("🧩 Beneficio medio por unidad", f"{sum(total_beneficio_unidad)/len(total_beneficio_unidad):.2f} €/unidad")
+        st.metric(" 📈 Beneficio portentual", f"{(total_beneficio/total_coste*100) if total_coste else 0:.2f} %")
