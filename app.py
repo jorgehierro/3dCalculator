@@ -31,7 +31,7 @@ unidades = st.number_input("📦 Número de unidades", min_value=1, step=1)
 
 # --- Botón para calcular ---
 if st.button("Calcular precio"):
-    coste_total, coste_unitario, coste_impresion, coste_mano_obra, beneficio, beneficio_por_hora = precio_total(
+    coste_total, coste_unitario, coste_impresion, coste_mano_obra, beneficio, beneficio_por_hora, beneficio_por_unidad = precio_total(
         tipo_filamento,
         tiempo_impresion,
         cantidad_filamento,
@@ -43,7 +43,7 @@ if st.button("Calcular precio"):
     )
 
     st.subheader("📊 Resultados")
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(4)
     with col1:
         st.metric("💰 Coste total", f"{coste_total:.2f} €")
         st.metric("🖨️ Coste de impresión", f"{coste_impresion:.2f} €")
@@ -53,3 +53,5 @@ if st.button("Calcular precio"):
     with col3:
         st.metric("📈 Beneficio", f"{beneficio:.2f} €")
         st.metric("⏳ Beneficio por hora", f"{beneficio_por_hora:.2f} €/h")
+    with col4:
+        st.metric("🧩 Beneficio por unidad", f"{beneficio_por_unidad:.2f} €/unidad")
