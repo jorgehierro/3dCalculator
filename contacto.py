@@ -15,19 +15,19 @@ st.write("Bienvenido a nuestra página de contacto. Aquí encontrarás nuestra i
 # Tarjetas de contacto
 with st.container():
     st.subheader("📧 Correo corporativo")
-    st.write("contacto@tuempresa.com")  # <-- Cambia por tu correo real
+    st.write("next3ddimension@gmail.com")  # <-- Cambia por tu correo real
 
     st.subheader("👥 Nuestro equipo")
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("**Nombre 1**")
-        st.write("Cargo / Rol")
+        st.markdown("**Jorge Fernández-Paniagua Moreno**")
+        st.write("📱: 67480520")
 
     with col2:
-        st.markdown("**Nombre 2**")
-        st.write("Cargo / Rol")
+        st.markdown("**Jorge Hierro Francoy**")
+        st.write("📱: 606982635")
 
 # Footer
 st.markdown("---")
-st.caption("© 2025 Tu Empresa. Todos los derechos reservados.")
+st.caption("© 2025 Next3Dimension. Todos los derechos reservados.")
