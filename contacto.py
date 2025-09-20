@@ -18,15 +18,8 @@ with st.container():
     st.write("next3ddimension@gmail.com")  # <-- Cambia por tu correo real
 
     st.subheader("👥 Nuestro equipo")
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("**Jorge Fernández-Paniagua Moreno**")
-        st.write("📱: 67480520")
-
-    with col2:
-        st.markdown("**Jorge Hierro Francoy**")
-        st.write("📱: 606982635")
+    st.write("**Jorge Fernández-Paniagua Moreno** – 📱: 67480520")
+    st.write("**Jorge Hierro Francoy** – 📱: 606982635")
 
 # Footer
 st.markdown("---")
