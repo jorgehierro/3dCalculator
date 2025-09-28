@@ -36,7 +36,7 @@ for i in range(num_tandas):
         key=f"modo{i}"
     )
 
-    tiempo_impresion, gramos, tipo_filamento, cambios_filamento = None, None, None
+    tiempo_impresion, gramos, tipo_filamento, cambios_filamento = None, None, None, None
 
     if modo == "Subir archivo .gcode":
         uploaded_file = st.file_uploader(
