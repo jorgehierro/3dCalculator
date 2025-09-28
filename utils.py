@@ -41,4 +41,9 @@ def leer_parametros(contenido):
     gramos = float(contenido[gramos:].split("\n", 1)[0].split("=")[1])
     gramos = math.ceil(gramos / 5) * 5
 
-    return tiempo_impresion, filamento, gramos
+    #Los cambios de filamento tienen el código M600 en el GCODE. Buscamos todos
+    cambios_filamento = re.findall("M600", contenido)
+    #Restamos uno porque se define el código M600 al final del GCODE: change_filament_gcode = M600
+    cambios_filamento = len(cambios_filamento) - 1
+
+    return tiempo_impresion, filamento, gramos, cambios_filamento
