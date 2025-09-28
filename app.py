@@ -48,6 +48,12 @@ for i in range(num_tandas):
             contenido = leer_gcode(uploaded_file)
             tiempo_impresion, tipo_filamento, gramos = leer_parametros(contenido)
 
+            # --- Preview de parámetros detectados ---
+            with st.expander(f"👀 Preview parámetros detectados en Tanda {i+1}", expanded=True):
+                st.write(f"⏱️ **Tiempo de impresión:** {tiempo_impresion}")
+                st.write(f"📏 **Filamento usado:** {gramos} g")
+                st.write(f"🎨 **Tipo de filamento:** {tipo_filamento}")
+
     else:  # Manual
         tiempo_impresion = st.text_input(
             f"⏱️ Tiempo de impresión (ej: 3h12m) - Tanda {i+1}",
