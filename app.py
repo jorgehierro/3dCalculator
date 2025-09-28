@@ -46,7 +46,7 @@ for i in range(num_tandas):
         )
         if uploaded_file:
             contenido = leer_gcode(uploaded_file)
-            tiempo_impresion, tipo_filamento, gramos = leer_parametros(uploaded_file)
+            tiempo_impresion, tipo_filamento, gramos = leer_parametros(contenido)
 
     else:  # Manual
         tiempo_impresion = st.text_input(
