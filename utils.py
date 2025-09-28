@@ -1,9 +1,9 @@
 import math
 import re
 
-def leer_gcode(ruta):
-    with open(ruta, "r", encoding="utf-8") as f:
-        return f.read()
+def leer_gcode(uploaded_file):
+    # uploaded_file es un objeto UploadedFile, no una ruta
+    return uploaded_file.read().decode("utf-8", errors="ignore")
 
 def redondear_a_15min_superior(cadena):
     # extraer horas, minutos y segundos

@@ -45,7 +45,7 @@ for i in range(num_tandas):
             key=f"gcode{i}"
         )
         if uploaded_file:
-            #contenido = leer_gcode(uploaded_file)
+            contenido = leer_gcode(uploaded_file)
             tiempo_impresion, tipo_filamento, gramos = leer_parametros(uploaded_file)
 
     else:  # Manual
