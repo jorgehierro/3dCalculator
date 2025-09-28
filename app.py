@@ -36,7 +36,7 @@ for i in range(num_tandas):
         key=f"modo{i}"
     )
 
-    tiempo_impresion, gramos, tipo_filamento = None, None, None
+    tiempo_impresion, gramos, tipo_filamento, cambios_filamento = None, None, None
 
     if modo == "Subir archivo .gcode":
         uploaded_file = st.file_uploader(
@@ -46,13 +46,14 @@ for i in range(num_tandas):
         )
         if uploaded_file:
             contenido = leer_gcode(uploaded_file)
-            tiempo_impresion, tipo_filamento, gramos = leer_parametros(contenido)
+            tiempo_impresion, tipo_filamento, gramos, cambios_filamento = leer_parametros(contenido)
 
             # --- Preview de parámetros detectados ---
             with st.expander(f"👀 Preview parámetros detectados en Tanda {i+1}", expanded=True):
                 st.write(f"⏱️ **Tiempo de impresión:** {tiempo_impresion}")
                 st.write(f"📏 **Filamento usado:** {gramos} g")
                 st.write(f"🎨 **Tipo de filamento:** {tipo_filamento}")
+                st.write(f"🔄 **Cambios de filamento:** {cambios_filamento}")
 
     else:  # Manual
         tiempo_impresion = st.text_input(
@@ -71,9 +72,14 @@ for i in range(num_tandas):
             ["PLA", "PETG", "ABS", "PLA-plus"],
             key=f"fil{i}"
         )
+        cambios_filamento = st.number_input(
+            f"🔄 Cambios de filamento - Tanda {i+1}", 
+            min_value=0, 
+            step=1, 
+            key=f"c{i}"
+        )
 
     # Campos comunes
-    cambios_filamento = st.number_input(f"🔄 Cambios de filamento - Tanda {i+1}", min_value=0, step=1, key=f"c{i}")
     tiempo_diseño = st.number_input(f"✏️ Tiempo de diseño (h) - Tanda {i+1}", min_value=0.0, step=0.1, key=f"d{i}")
     tiempo_postprocesado = st.number_input(f"🔧 Tiempo de postprocesado (h) - Tanda {i+1}", min_value=0.0, step=0.1, key=f"p{i}")
     unidades = st.number_input(f"📦 Número de unidades - Tanda {i+1}", min_value=1, step=1, key=f"u{i}")
