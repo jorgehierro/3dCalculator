@@ -84,4 +84,17 @@ def filamentos_disponibles(inventario, tipo_filamento):
         df_hierro = pd.DataFrame(data_Hierro)
         df_hierro = df_hierro[['Tipo', 'Marca', 'Color', 'Cantidad']]
         return(list(set(df_hierro[df_hierro['Tipo'] == tipo_filamento]['Marca'])))
-    
+
+def colores_disponibles(inventario, tipo_filamento, marca_filamento):
+    if inventario == "Pano":
+        CantidadesPano = sh.worksheet("CantidadesPano")
+        data_Pano = CantidadesPano.get_all_records()
+        df_pano = pd.DataFrame(data_Pano)
+        df_pano = df_pano[['Tipo', 'Marca', 'Color', 'Cantidad']]
+        return(list(set(df_pano[(df_pano['Tipo'] == tipo_filamento) & (df_pano['Marca'] == marca_filamento)]['Color'])))
+    else:
+        CantidadesHierro = sh.worksheet("CantidadesHierro")
+        data_Hierro = CantidadesHierro.get_all_records()
+        df_hierro = pd.DataFrame(data_Hierro)
+        df_hierro = df_hierro[['Tipo', 'Marca', 'Color', 'Cantidad']]
+        return(list(set(df_hierro[(df_hierro['Tipo'] == tipo_filamento) & (df_hierro['Marca'] == marca_filamento)]['Color'])))
