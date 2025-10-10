@@ -8,7 +8,18 @@ import streamlit as st
 
 # CONFIG
 doc_excel_token = st.secrets.get("Doc_Excel", "")
-creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
+
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+# Agregar scopes aquí
+creds = Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"],
+    scopes=SCOPES
+)
+
 gc = gspread.authorize(creds)
 
 sh = gc.open_by_key(doc_excel_token)
