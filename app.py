@@ -101,6 +101,11 @@ inventario = st.selectbox("📚 Selecciona el inventario", ["Pano", "Hierro"])
 marca_filamento = st.selectbox("🎭 Marca de filamento", filamentos_disponibles(inventario, tipo_filamento))
 #Selección del color del filamento según la marca seleccionada. Puedo seleccionar varios colores
 color_filamento = st.multiselect("🌈 Color de filamento", colores_disponibles(inventario, tipo_filamento, marca_filamento))
+#Ahora quiero que, para cada color seleccionado, que me aparezca un input para indicar la cantidad de filamento en gramos de ese color
+cantidad_color = {}
+for color in color_filamento:
+    cantidad = st.number_input(f"📏 Cantidad de filamento (g) para el color {color}", min_value=0.0, step=0.1, key=f"color_{color}")
+    cantidad_color[color] = cantidad
 
 # --- Botón para calcular ---
 if st.button("Calcular precio"):
