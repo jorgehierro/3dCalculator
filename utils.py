@@ -1,5 +1,17 @@
 import math
 import re
+import gspread
+import pandas as pd
+from gspread_dataframe import set_with_dataframe
+from google.oauth2.service_account import Credentials
+import streamlit as st
+
+# CONFIG
+doc_excel_token = st.secrets.get("Doc_Excel", "")
+creds = Credentials.from_service_account_info(st.secrets["gcp_service_account"])
+gc = gspread.authorize(creds)
+
+sh = gc.open_by_key(doc_excel_token)
 
 def leer_gcode(uploaded_file):
     # uploaded_file es un objeto UploadedFile, no una ruta
@@ -47,3 +59,18 @@ def leer_parametros(contenido):
     cambios_filamento = len(cambios_filamento) - 1
 
     return tiempo_impresion, filamento, gramos, cambios_filamento
+
+def filamentos_disponibles(inventario, tipo_filamento):
+    if inventario == "Pano":
+        CantidadesPano = sh.worksheet("CantidadesPano")
+        data_Pano = CantidadesPano.get_all_records()
+        df_pano = pd.DataFrame(data_Pano)
+        df_pano = df_pano[['Tipo', 'Marca', 'Color', 'Cantidad']]
+        return(list(set(df_pano[df_pano['Tipo'] == tipo_filamento]['Marca'])))
+    else:
+        CantidadesHierro = sh.worksheet("CantidadesHierro")
+        data_Hierro = CantidadesHierro.get_all_records()
+        df_hierro = pd.DataFrame(data_Hierro)
+        df_hierro = df_hierro[['Tipo', 'Marca', 'Color', 'Cantidad']]
+        return(list(set(df_hierro[df_hierro['Tipo'] == tipo_filamento]['Marca'])))
+    
