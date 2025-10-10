@@ -1,6 +1,6 @@
 import streamlit as st
 from calculadora import precio_total, Configuracion
-from utils import leer_gcode, leer_parametros
+from utils import leer_gcode, leer_parametros, filamentos_disponibles
 
 # Configuración de la app
 st.set_page_config(page_title="Calculadora de precios 3D", page_icon="🖨️", layout="centered")
@@ -94,6 +94,10 @@ for i in range(num_tandas):
         "tiempo_postprocesado": tiempo_postprocesado,
         "unidades": unidades
     })
+
+#Añadir desplegable para seleccionar el inventario de Panigua o Hierro
+inventario = st.selectbox("📚 Selecciona el inventario", ["Pano", "Hierro"])
+marca_filamento = st.selectbox("🎭 Marca de filamento", filamentos_disponibles(inventario, tipo_filamento))
 
 # --- Botón para calcular ---
 if st.button("Calcular precio"):
