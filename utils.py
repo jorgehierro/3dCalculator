@@ -108,7 +108,7 @@ def actualizar_inventario(consumido, inventario, tipo_filamento, marca_filamento
             consumido = 0
             break
         else:
-            # Si no alcanza, ponemos 0 y restamos lo que falta
+            # Si no alcanza, ponemos 0 y restamos lo que falta.
             consumido -= cantidad_actual
             df.loc[idx, 'Cantidad'] = "0 g"
             
