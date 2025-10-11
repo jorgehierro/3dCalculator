@@ -104,7 +104,7 @@ def actualizar_inventario(consumido, inventario, tipo_filamento, marca_filamento
         
         if cantidad_actual >= consumido:
             # Si alcanza, restamos y terminamos
-            df.loc[idx, 'Cantidad'] = f"{cantidad_actual - consumido} g"
+            df.loc[idx, 'Cantidad'] = f"{int(cantidad_actual - consumido)} g"
             consumido = 0
             break
         else:
