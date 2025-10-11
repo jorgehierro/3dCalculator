@@ -100,7 +100,7 @@ def actualizar_inventario(consumido, inventario, tipo_filamento, marca_filamento
 
     for idx in df[filtro].index:
         # Convertimos la cantidad a entero
-        cantidad_actual = int(df.loc[idx, 'Cantidad'].replace(" g", ""))
+        cantidad_actual = int(float(df.loc[idx, 'Cantidad'].replace(" g", "").strip()))
         
         if cantidad_actual >= consumido:
             # Si alcanza, restamos y terminamos
