@@ -106,12 +106,14 @@ cantidad_color = {}
 for color in color_filamento:
     cantidad = st.number_input(f"📏 Cantidad de filamento (g) para el color {color}", min_value=0.0, step=0.1, key=f"color_{color}")
     cantidad_color[color] = cantidad
-#Actualizamos el inventario
-for color, cantidad in cantidad_color.items():
-    actualizar_inventario(cantidad, inventario, tipo_filamento, marca_filamento, color)
 
 # --- Botón para calcular ---
 if st.button("Calcular precio"):
+    
+    #Actualizamos el inventario
+    for color, cantidad in cantidad_color.items():
+        actualizar_inventario(cantidad, inventario, tipo_filamento, marca_filamento, color)
+
     total_coste = total_unitario = total_impresion = 0
     total_mano_obra = total_beneficio = 0
     total_unidades = 0
