@@ -1,6 +1,6 @@
 import streamlit as st
 from calculadora import precio_total, Configuracion
-from utils import leer_gcode, leer_parametros, filamentos_disponibles, colores_disponibles
+from utils import leer_gcode, leer_parametros, filamentos_disponibles, colores_disponibles, actualizar_inventario
 
 # Configuración de la app
 st.set_page_config(page_title="Calculadora de precios 3D", page_icon="🖨️", layout="centered")
@@ -106,6 +106,9 @@ cantidad_color = {}
 for color in color_filamento:
     cantidad = st.number_input(f"📏 Cantidad de filamento (g) para el color {color}", min_value=0.0, step=0.1, key=f"color_{color}")
     cantidad_color[color] = cantidad
+#Actualizamos el inventario
+for color, cantidad in cantidad_color.items():
+    actualizar_inventario(cantidad, inventario, tipo_filamento, marca_filamento, color)
 
 # --- Botón para calcular ---
 if st.button("Calcular precio"):
