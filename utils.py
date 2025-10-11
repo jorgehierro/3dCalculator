@@ -71,30 +71,50 @@ def leer_parametros(contenido):
 
     return tiempo_impresion, filamento, gramos, cambios_filamento
 
-def filamentos_disponibles(inventario, tipo_filamento):
+def seleccionar_inventario(inventario):
     if inventario == "Pano":
         CantidadesPano = sh.worksheet("CantidadesPano")
         data_Pano = CantidadesPano.get_all_records()
         df_pano = pd.DataFrame(data_Pano)
         df_pano = df_pano[['Tipo', 'Marca', 'Color', 'Cantidad']]
-        return(list(set(df_pano[df_pano['Tipo'] == tipo_filamento]['Marca'])))
+        return df_pano
     else:
         CantidadesHierro = sh.worksheet("CantidadesHierro")
         data_Hierro = CantidadesHierro.get_all_records()
         df_hierro = pd.DataFrame(data_Hierro)
         df_hierro = df_hierro[['Tipo', 'Marca', 'Color', 'Cantidad']]
-        return(list(set(df_hierro[df_hierro['Tipo'] == tipo_filamento]['Marca'])))
+        return df_hierro
+
+def filamentos_disponibles(inventario, tipo_filamento):
+    df = seleccionar_inventario(inventario)
+    return(list(set(df[df['Tipo'] == tipo_filamento]['Marca'])))
+    
 
 def colores_disponibles(inventario, tipo_filamento, marca_filamento):
+    df = seleccionar_inventario(inventario)
+    return(list(set(df[(df['Tipo'] == tipo_filamento) & (df['Marca'] == marca_filamento)]['Color'])))
+
+def actualizar_inventario(consumido, inventario, tipo_filamento, marca_filamento, color_filamento):
+    df = seleccionar_inventario(inventario)
+    filtro = (df['Tipo'] == tipo_filamento) & (df['Marca'] == marca_filamento) & (df['Color'] == color_filamento)
+
+    for idx in df[filtro].index:
+        # Convertimos la cantidad a entero
+        cantidad_actual = int(df.loc[idx, 'Cantidad'].replace(" g", ""))
+        
+        if cantidad_actual >= consumido:
+            # Si alcanza, restamos y terminamos
+            df.loc[idx, 'Cantidad'] = f"{cantidad_actual - consumido} g"
+            consumido = 0
+            break
+        else:
+            # Si no alcanza, ponemos 0 y restamos lo que falta
+            consumido -= cantidad_actual
+            df.loc[idx, 'Cantidad'] = "0 g"
+            
     if inventario == "Pano":
-        CantidadesPano = sh.worksheet("CantidadesPano")
-        data_Pano = CantidadesPano.get_all_records()
-        df_pano = pd.DataFrame(data_Pano)
-        df_pano = df_pano[['Tipo', 'Marca', 'Color', 'Cantidad']]
-        return(list(set(df_pano[(df_pano['Tipo'] == tipo_filamento) & (df_pano['Marca'] == marca_filamento)]['Color'])))
+        hoja = sh.worksheet("CantidadesPano")
     else:
-        CantidadesHierro = sh.worksheet("CantidadesHierro")
-        data_Hierro = CantidadesHierro.get_all_records()
-        df_hierro = pd.DataFrame(data_Hierro)
-        df_hierro = df_hierro[['Tipo', 'Marca', 'Color', 'Cantidad']]
-        return(list(set(df_hierro[(df_hierro['Tipo'] == tipo_filamento) & (df_hierro['Marca'] == marca_filamento)]['Color'])))
+        hoja = sh.worksheet("CantidadesHierro")
+
+    set_with_dataframe(hoja, df)
